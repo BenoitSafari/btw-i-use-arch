@@ -42,7 +42,7 @@ echo "# [ARCH-INSTALL-SCRIPT] Installing base packages."
 echo "###############################################################"
 pacman -Syu --noconfirm \
 git base-devel pciutils acpid btrfs-progs iwd llvm networkmanager snapper snap-pac grub-btrfs os-prober efibootmgr \
-nss-mdns pacman-contrib ufw unzip p7zip ripgrep plocate cifs-utils exfatprogs gvfs-mtp gvfs-smb rust \
+nss-mdns pacman-contrib ufw unzip p7zip ripgrep plocate cifs-utils exfatprogs gvfs-mtp gvfs-smb rust sof-firmware alsa-firmware alsa-ucm-conf \
 ffmpeg poppler iputils fontconfig jq wireless-regdb fzf pipewire-pulse wireplumber bluez go \
 kitty fastfetch ffmpegthumbnailer imv man-db tldr nano wget \
 noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-bitstream-vera \
