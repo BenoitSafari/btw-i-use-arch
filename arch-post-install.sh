@@ -17,6 +17,10 @@ user_apps=(
     dotnet-sdk-8.0
     dotnet-sdk-9.0
     dotnet-sdk
+    aspnet-runtime-6.0
+    aspnet-runtime-8.0
+    aspnet-runtime-9.0
+    aspnet-runtime
     jdk8-openjdk
 )
 user_ext=(
