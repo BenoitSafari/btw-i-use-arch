@@ -26,6 +26,8 @@ user_apps=(
 user_ext=(
     gnome-shell-extension-appindicator 
     gnome-shell-extension-blur-my-shell
+    gnome-shell-extension-lan-ip-address-git 
+    gnome-shell-extension-rounded-window-corners-reborn-git
 )
 
 if [ "$(id -u)" -eq 0 ]; then
