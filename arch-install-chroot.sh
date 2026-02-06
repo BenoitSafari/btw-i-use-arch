@@ -77,7 +77,7 @@ echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Installing web browsers and multimedia applications."
 echo "###############################################################"
 pacman -Syu --noconfirm \
-chromium firefox vlc
+chromium firefox vlc vlc-plugins-all
 
 # Theme and font settings
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface font-antialiasing 'rgba'

@@ -8,6 +8,10 @@ user_apps_aur=(
     vscodium-bin
     vscodium-marketplace
 )
+user_apps_snap=(
+    discord
+    teams-for-linux
+)
 user_apps=(
     qbittorrent 
     bitwarden
@@ -22,6 +26,8 @@ user_apps=(
     aspnet-runtime-9.0
     aspnet-runtime
     jdk8-openjdk
+    steam
+    prismlauncher
 )
 user_ext=(
     gnome-shell-extension-appindicator 
@@ -65,6 +71,11 @@ if [ ! -L /snap ]; then
     echo "Creating /snap symlink..."
     sudo ln -s /var/lib/snapd/snap /snap
 fi
+
+echo "###############################################################"
+echo "# [ARCH-INSTALL-SCRIPT] Installing Snap apps."
+echo "###############################################################"
+sudo snap install "${user_apps_snap[@]}"
 
 echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Installing pamac."
