@@ -1,3 +1,7 @@
+echo "###############################################################"
+echo "# [ARCH-INSTALL-SCRIPT] Installing Node (Node Version Switcher)."
+echo "###############################################################"
+
 export NVS_HOME="$HOME/.nvs"
 git clone https://github.com/jasongin/nvs "$NVS_HOME"
 source "$NVS_HOME/nvs.sh"

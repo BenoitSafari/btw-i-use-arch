@@ -1,0 +1,48 @@
+#!/bin/bash
+
+user_apps_aur=(
+    brave-bin
+    p7zip-gui
+    pinta
+    jetbrains-toolbox
+    vscodium-bin
+    vscodium-marketplace
+)
+
+user_apps_snap=(
+    discord
+    teams-for-linux
+)
+
+user_apps=(
+    qbittorrent 
+    bitwarden
+    podman 
+    podman-desktop
+    dotnet-sdk-6.0
+    dotnet-sdk-8.0
+    dotnet-sdk-9.0
+    dotnet-sdk
+    aspnet-runtime-6.0
+    aspnet-runtime-8.0
+    aspnet-runtime-9.0
+    aspnet-runtime
+    jdk8-openjdk
+    steam
+    prismlauncher
+)
+
+echo "###############################################################"
+echo "# [ARCH-INSTALL-SCRIPT] Installing user apps from official repositories."
+echo "###############################################################"
+sudo pacman -Syu --noconfirm "${user_apps[@]}"
+
+echo "###############################################################"
+echo "# [ARCH-INSTALL-SCRIPT] Installing AUR apps."
+echo "###############################################################"
+yay -S --noconfirm --needed "${user_apps_aur[@]}"
+
+echo "###############################################################"
+echo "# [ARCH-INSTALL-SCRIPT] Installing Snap apps."
+echo "###############################################################"
+sudo snap install "${user_apps_snap[@]}"
