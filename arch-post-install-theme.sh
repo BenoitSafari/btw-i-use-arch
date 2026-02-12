@@ -20,6 +20,7 @@ sudo ./install.sh -s $screen_res -b
 
 
 user_ext=(
+    xcursor-breeze
     gnome-shell-extension-appindicator 
     gnome-shell-extension-blur-my-shell
     gnome-shell-extension-lan-ip-address-git 

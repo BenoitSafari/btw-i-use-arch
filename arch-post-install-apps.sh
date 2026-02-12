@@ -7,11 +7,11 @@ user_apps_aur=(
     jetbrains-toolbox
     vscodium-bin
     vscodium-marketplace
+    teams-for-linux-bin
 )
 
 user_apps_snap=(
     discord
-    teams-for-linux
 )
 
 user_apps=(
