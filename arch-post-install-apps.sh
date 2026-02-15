@@ -27,6 +27,8 @@ user_apps=(
     aspnet-runtime-8.0
     aspnet-runtime-9.0
     aspnet-runtime
+    aspnet-targeting-pack
+    dotnet-targeting-pack
     jdk8-openjdk
     steam
     prismlauncher
