@@ -4,6 +4,8 @@ user_apps_aur=(
     brave-bin
     p7zip-gui
     pinta
+    jre
+    rider
     jetbrains-toolbox
     vscodium-bin
     vscodium-marketplace
@@ -29,7 +31,6 @@ user_apps=(
     aspnet-runtime
     aspnet-targeting-pack
     dotnet-targeting-pack
-    jdk8-openjdk
     steam
     prismlauncher
 )
