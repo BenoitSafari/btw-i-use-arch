@@ -3,6 +3,7 @@
 localdomains="dev.localhost.com dev.localhost.io dev.localhost.fr dev.localhost.de dev.localhost.ch dev.localhost.be dev.localhost.lu"
 username="$1"
 userpass="$2"
+gpu_profile="$3"
 
 if [[ -z "$username" ]]; then
     echo "Error: User and password are not defined."
@@ -51,18 +52,37 @@ ttf-opensans ttf-roboto woff2-font-awesome ttf-jetbrains-mono-nerd papirus-icon-
 gnome gnome-themes-extra gdm gnome-shell-extensions gnome-browser-connector xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
 system-config-printer cups cups-browsed cups-filters networkmanager-openvpn
 
-# Gnome bloatwares removal
 sudo pacman -Rs --noconfirm gnome-contacts gnome-weather gnome-characters gnome-music gnome-maps gnome-tour gnome-console epiphany gnome-software
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing detected graphics drivers."
+echo "# [ARCH-INSTALL-SCRIPT] Installing graphics drivers."
 echo "###############################################################"
-if lspci | grep -qi nvidia; then
-    pacman -Syu --noconfirm nvidia nvidia-utils nvidia-settings
-elif lspci | grep -qi "amd\|ati"; then
-    pacman -Syu --noconfirm xf86-video-amdgpu vulkan-radeon
-elif lspci | grep -qi intel; then
-    pacman -Syu --noconfirm xf86-video-intel vulkan-intel
+install_gpu_nvidia()  { pacman -Syu --noconfirm nvidia nvidia-utils nvidia-settings; }
+install_gpu_amd()    { pacman -Syu --noconfirm xf86-video-amdgpu vulkan-radeon libva-mesa-driver; }
+install_gpu_intel()  { pacman -Syu --noconfirm xf86-video-intel vulkan-intel; }
+
+if [[ -n "$gpu_profile" ]]; then
+    echo "GPU profile(s) specified: $gpu_profile"
+    IFS=',' read -ra profiles <<< "$gpu_profile"
+    for profile in "${profiles[@]}"; do
+        case "$profile" in
+            nvidia) install_gpu_nvidia ;;
+            amd)    install_gpu_amd ;;
+            intel)  install_gpu_intel ;;
+            *)      echo "Unknown GPU profile: $profile (skipping)" ;;
+        esac
+    done
+else
+    echo "No GPU profile specified, auto-detecting..."
+    if lspci | grep -qi nvidia; then
+        install_gpu_nvidia
+    fi
+    if lspci | grep -qi "amd\|ati"; then
+        install_gpu_amd
+    fi
+    if lspci | grep -qi intel; then
+        install_gpu_intel
+    fi
 fi
 
 echo "###############################################################"
