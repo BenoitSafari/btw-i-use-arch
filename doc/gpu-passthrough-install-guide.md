@@ -27,7 +27,7 @@ Sauvegarder (`F10`) et redémarrer. L'écran connecté à la carte mère doit af
 ## Phase 2 — Paquets de virtualisation
 
 ```bash
-sudo pacman -Syu qemu-full libvirt virt-manager virt-viewer dnsmasq bridge-utils \
+sudo pacman -Syu qemu-full libvirt virt-manager virt-viewer dnsmasq \
   iptables-nft swtpm edk2-ovmf dkms linux-headers
 ```
 
@@ -53,7 +53,7 @@ Se déconnecter/reconnecter pour prendre en compte les groupes.
 Éditer `/etc/default/grub`, ajouter à `GRUB_CMDLINE_LINUX_DEFAULT` :
 
 ```
-amd_iommu=on iommu=pt
+amd_iommu=on iommu=pt nvidia-drm.modeset=1
 ```
 
 Régénérer la config :
@@ -89,17 +89,68 @@ done
 
 Chercher la RTX 3080 (2 devices : VGA + Audio HDMI). Ils doivent être **seuls** dans leur groupe. Noter les adresses PCI (ex: `01:00.0` et `01:00.1`).
 
+```
+	01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA102 [GeForce RTX 3080] [10de:2206] (rev a1)
+	01:00.1 Audio device [0403]: NVIDIA Corporation GA102 High Definition Audio Controller [10de:1aef] (rev a1)
+```
 ---
 
 ## Phase 4 — Pilotes NVIDIA + PRIME
 
 Le script `arch-install.sh` avec `--gpu-profile=nvidia,amd` installe déjà les pilotes de base. Pour le passthrough dynamique, il vaut mieux utiliser la version DKMS :
 
+### 4.1 Activer multilib
+
+Éditer `/etc/pacman.conf` et décommenter la section `[multilib]` :
+
+```
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+```
+
+Mettre à jour les paquets :
+
 ```bash
-sudo pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils prime-run
+sudo pacman -Syu
+```
+
+### 4.2 Installer les pilotes
+
+```bash
+sudo pacman -S nvidia-dkms lib32-nvidia-utils nvidia-prime
 ```
 
 Utilisation : lancer une app sur la RTX avec `prime-run <commande>` (ex: `prime-run steam`). Sans `prime-run`, la RTX reste en veille (D3) — c'est ce qui rend le détachement dynamique possible.
+
+### 4.3 Forcer GDM sur iGPU AMD
+
+Par défaut, GDM peut choisir la RTX comme GPU d'affichage même si le BIOS est configuré sur IGD. Deux actions sont nécessaires.
+
+**1. Masquer la règle udev système de GDM** (qui peut interférer) :
+
+```bash
+sudo ln -s /dev/null /etc/udev/rules.d/61-gdm.rules
+```
+
+**2. Créer une règle udev pour retirer l'accès siège à NVIDIA** — `/etc/udev/rules.d/62-nvidia-no-display.rules` :
+
+```
+SUBSYSTEM=="drm", KERNEL=="card*", ATTR{../vendor}=="0x10de", TAG-="seat", TAG-="uaccess"
+```
+
+**3. Créer `/etc/modprobe.d/nvidia-display.conf`** (active le modeset pour PRIME offload) :
+
+```
+options nvidia-drm modeset=1
+```
+
+Rechargement des règles udev + redémarrage GDM :
+
+```bash
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+sudo systemctl restart gdm
+```
 
 ---
 
@@ -136,15 +187,16 @@ set -x
 GPU_VGA="pci_0000_01_00_0"
 GPU_AUDIO="pci_0000_01_00_1"
 
-if fuser -s /dev/nvidia* /dev/dri/card1 2>/dev/null; then
-    fuser -k -9 /dev/nvidia* /dev/dri/card1
-    sleep 2
-fi
-
 modprobe -r nvidia_drm
 modprobe -r nvidia_modeset
 modprobe -r nvidia_uvm
 modprobe -r nvidia
+
+# If modprobe fails silently then try to kill the process
+# if fuser -s /dev/nvidia* 2>/dev/null; then
+#     fuser -k -9 /dev/nvidia*
+#     sleep 2
+# fi
 
 virsh nodedev-detach $GPU_VGA
 virsh nodedev-detach $GPU_AUDIO
@@ -241,7 +293,7 @@ Cliquer sur **Overview → XML**, chercher la balise `<cpu>` et s'assurer qu'ell
 
 ```xml
 <cpu mode="host-passthrough" check="none">
-  <topology sockets="1" dies="1" cores="8" threads="1"/>
+  <topology sockets="1" dies="1" cores="<NUMBER_OF_VCPUS_CORE>" threads="1"/>
 </cpu>
 ```
 

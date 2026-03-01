@@ -20,5 +20,5 @@ cd ./arch-install-script
 chmod +x arch-i*.sh
 bash arch-install.sh
 # Or, with arguments
-bash arch-install.sh --part-efi=/dev/nvme0n1p1 --part-root=/dev/nvme0n1p6 --part-swap=/dev/nvme0n1p5 --format-efi=0
+bash arch-install.sh --part-efi=/dev/nvme0n1p1 --part-root=/dev/nvme0n1p6 --part-swap=/dev/nvme0n1p5 --format-efi=0 --gpu-profile=nvidia
 ```
