@@ -9,17 +9,6 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Enabling multilib."
-echo "###############################################################"
-if grep -q "^\[multilib\]" /etc/pacman.conf; then
-    echo "multilib is already active."
-else
-    echo "Enabling multilib..."
-    sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-    sudo pacman -Sy --noconfirm
-fi
-
-echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Install/Update yay AUR helper."
 echo "###############################################################"
 if ! command -v yay &> /dev/null; then
@@ -69,12 +58,11 @@ else
     sudo sed -i 's/#EnableFlatpak/EnableFlatpak/' "$PAMAC_CONF"
 fi
 
-# Custom parts
-cp ./desktop-overrides/kitty.desktop ~/.local/share/applications/kitty.desktop
-chmod +x ./arch-post-install-*.sh
-./arch-post-install-apps.sh
-./arch-post-install-theme.sh
-./arch-post-install-node.sh
+cp ./assets/kitty.desktop ~/.local/share/applications/kitty.desktop
+chmod +x ./scripts/arch-post-install-*.sh
+./scripts/arch-post-install-apps.sh
+./scripts/arch-post-install-theme.sh
+./scripts/arch-post-install-node.sh
 
 echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Post-install complete!"

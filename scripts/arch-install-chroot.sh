@@ -11,6 +11,12 @@ if [[ -z "$username" ]]; then
 fi
 
 echo "###############################################################"
+echo "# [ARCH-INSTALL-SCRIPT] Enabling multilib repository."
+echo "###############################################################"
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+pacman -Sy --noconfirm
+
+echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Configuring locale and hostname."
 echo "###############################################################"
 ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
@@ -57,7 +63,12 @@ sudo pacman -Rs --noconfirm gnome-contacts gnome-weather gnome-characters gnome-
 echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Installing graphics drivers."
 echo "###############################################################"
-install_gpu_nvidia()  { pacman -Syu --noconfirm linux-headers nvidia-dkms nvidia-utils egl-wayland; }
+has_nvidia=0
+
+install_gpu_nvidia() {
+    pacman -Syu --noconfirm linux-headers nvidia-dkms nvidia-utils egl-wayland
+    has_nvidia=1
+}
 install_gpu_amd()    { pacman -Syu --noconfirm xf86-video-amdgpu vulkan-radeon libva-mesa-driver; }
 install_gpu_intel()  { pacman -Syu --noconfirm xf86-video-intel vulkan-intel; }
 
@@ -85,6 +96,23 @@ else
     fi
 fi
 
+if [[ $has_nvidia -eq 1 ]]; then
+    echo "###############################################################"
+    echo "# [ARCH-INSTALL-SCRIPT] Configuring NVIDIA kernel parameters."
+    echo "###############################################################"
+    if grep -q "^GRUB_CMDLINE_LINUX_DEFAULT=" /etc/default/grub; then
+        current=$(grep "^GRUB_CMDLINE_LINUX_DEFAULT=" /etc/default/grub | sed 's/^GRUB_CMDLINE_LINUX_DEFAULT="//;s/"$//')
+        for param in nvidia_drm.modeset=1 nvidia_drm.fbdev=1; do
+            if ! echo "$current" | grep -q "$param"; then
+                current="$current $param"
+            fi
+        done
+        sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"$current\"|" /etc/default/grub
+    else
+        echo 'GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet nvidia_drm.modeset=1 nvidia_drm.fbdev=1"' >> /etc/default/grub
+    fi
+fi
+
 echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Installing Oh My Zsh and plugins for user $username."
 echo "###############################################################"
@@ -99,7 +127,6 @@ echo "###############################################################"
 pacman -Syu --noconfirm \
 chromium firefox vlc vlc-plugins-all
 
-# Theme and font settings
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface font-antialiasing 'rgba'
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface font-hinting 'slight'
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
@@ -109,13 +136,12 @@ sudo -u $username dbus-launch gsettings set org.gnome.desktop.wm.preferences act
 sudo -u $username dbus-launch gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
 sudo -u $username dbus-launch gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
 sudo -u $username dbus-launch gsettings set org.gnome.nautilus.preferences migrated-gtk-settings true
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.privacy remember-recent-files false
 sudo -u $username dbus-launch gsettings set org.gnome.mutter center-new-windows true
+sudo -u $username dbus-launch gsettings set org.gnome.desktop.privacy remember-recent-files false
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface show-battery-percentage true
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface cursor-size 24
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fr')]"
 
-# GDM Keyboard layout
 mkdir -p /etc/X11/xorg.conf.d
 cat <<EOF > /etc/X11/xorg.conf.d/00-keyboard.conf
 Section "InputClass"
@@ -137,7 +163,6 @@ sources=[('xkb', 'fr')]
 EOF
 dconf update
 
-# Power settings
 sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'suspend'
 sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.power idle-dim true
 sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend'
@@ -146,12 +171,10 @@ sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.po
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface show-battery-percentage true
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.session idle-delay 0
 
-# Trackpad settings
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad click-method 'areas'
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 
-# Nautilus settings
 mkdir -p /usr/local/bin
 ln -sf /usr/bin/kitty /usr/local/bin/x-terminal-emulator
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.default-applications.terminal exec-arg '-e'
@@ -186,7 +209,13 @@ mount -o compress=zstd,subvol=@snapshots "$root_dev" /.snapshots
 
 chmod 750 /.snapshots
 chown :wheel /.snapshots
-snapper --no-dbus -c root set-config "TIMELINE_LIMIT_HOURLY=0" "TIMELINE_LIMIT_DAILY=7" "TIMELINE_LIMIT_WEEKLY=0" "TIMELINE_LIMIT_MONTHLY=0" "TIMELINE_LIMIT_YEARLY=0"
+snapper --no-dbus -c root set-config \
+    "TIMELINE_CREATE=yes" \
+    "TIMELINE_LIMIT_HOURLY=0" \
+    "TIMELINE_LIMIT_DAILY=7" \
+    "TIMELINE_LIMIT_WEEKLY=0" \
+    "TIMELINE_LIMIT_MONTHLY=0" \
+    "TIMELINE_LIMIT_YEARLY=0"
 
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
@@ -202,3 +231,4 @@ cat > /etc/systemd/system/snapper-timeline.timer.d/override.conf << 'EOF'
 OnCalendar=
 OnCalendar=daily
 EOF
+systemctl daemon-reload
