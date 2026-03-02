@@ -109,6 +109,7 @@ sudo -u $username dbus-launch gsettings set org.gnome.desktop.wm.preferences act
 sudo -u $username dbus-launch gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
 sudo -u $username dbus-launch gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
 sudo -u $username dbus-launch gsettings set org.gnome.nautilus.preferences migrated-gtk-settings true
+sudo -u $username dbus-launch gsettings set org.gnome.desktop.privacy remember-recent-files false
 sudo -u $username dbus-launch gsettings set org.gnome.mutter center-new-windows true
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface show-battery-percentage true
 sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface cursor-size 24

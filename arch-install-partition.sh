@@ -74,6 +74,7 @@ if [[ -z "$partroot" || -z "$partswap" || -z "$partefi" ]]; then
     gdisk $disk
 
     while [[ -z "$partroot" || -z "$partswap" || -z "$partefi" ]]; do
+        lsblk
         read -r -p "Enter the root partition (e.g., /dev/sda2): " partroot
         if [[ ! -b "$partroot" ]]; then
             echo "Invalid partition."
