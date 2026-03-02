@@ -61,6 +61,7 @@ fi
 cp ./assets/kitty.desktop ~/.local/share/applications/kitty.desktop
 chmod +x ./scripts/arch-post-install-*.sh
 ./scripts/arch-post-install-apps.sh
+./scripts/arch-post-install-vscodium.sh
 ./scripts/arch-post-install-theme.sh
 ./scripts/arch-post-install-node.sh
 

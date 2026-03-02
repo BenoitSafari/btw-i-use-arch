@@ -1,0 +1,223 @@
+{
+    "workbench.startupEditor": "none",
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.formatOnType": false,
+    "editor.inlineSuggest.enabled": true,
+    "editor.fontVariations": false,
+    "editor.fontLigatures": true,
+    "editor.gotoLocation.multipleDefinitions": "goto",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.openRepositoryInParentFolders": "always",
+    "git.ignoreRebaseWarning": true,
+    "githubPullRequests.pullBranch": "never",
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "explorer.confirmPasteNative": false,
+    "emmet.includeLanguages": {
+        "postcss": "css"
+    },
+    "files.associations": {
+        ".env*": "dotenv",
+        "xstring": "cpp",
+        "*.idl": "midl3",
+        "array": "cpp",
+        "future": "cpp",
+        "istream": "cpp",
+        "memory": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "variant": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "xloctime": "cpp",
+        "multi_span": "cpp",
+        "pointers": "cpp",
+        "vector": "cpp",
+        "bitset": "cpp",
+        "deque": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "queue": "cpp",
+        "random": "cpp",
+        "regex": "cpp",
+        "stack": "cpp",
+        "xhash": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp",
+        "span": "cpp",
+        "string_span": "cpp",
+        "algorithm": "cpp",
+        "atomic": "cpp",
+        "bit": "cpp",
+        "cctype": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "clocale": "cpp",
+        "cmath": "cpp",
+        "compare": "cpp",
+        "complex": "cpp",
+        "concepts": "cpp",
+        "condition_variable": "cpp",
+        "cstdarg": "cpp",
+        "cstddef": "cpp",
+        "cstdint": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "cwchar": "cpp",
+        "cwctype": "cpp",
+        "exception": "cpp",
+        "filesystem": "cpp",
+        "fstream": "cpp",
+        "functional": "cpp",
+        "iomanip": "cpp",
+        "ios": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "iterator": "cpp",
+        "limits": "cpp",
+        "locale": "cpp",
+        "map": "cpp",
+        "memory_resource": "cpp",
+        "mutex": "cpp",
+        "new": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "ostream": "cpp",
+        "ratio": "cpp",
+        "set": "cpp",
+        "shared_mutex": "cpp",
+        "sstream": "cpp",
+        "stdexcept": "cpp",
+        "stop_token": "cpp",
+        "streambuf": "cpp",
+        "string": "cpp",
+        "system_error": "cpp",
+        "thread": "cpp",
+        "typeinfo": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "xfacet": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp",
+        "xlocbuf": "cpp",
+        "xlocinfo": "cpp",
+        "xmemory": "cpp",
+        "xstddef": "cpp",
+        "xtr1common": "cpp",
+        "coroutine": "cpp",
+        "format": "cpp",
+        "forward_list": "cpp",
+        "latch": "cpp"
+    },
+    "terminal.integrated.fontFamily": "JetBrains Mono",
+    "editor.fontFamily": "JetBrains Mono",
+    "scm.inputFontFamily": "JetBrains Mono",
+    "debug.console.fontFamily": "JetBrains Mono",
+    "editor.codeLensFontFamily": "JetBrains Mono",
+    "editor.inlineSuggest.fontFamily": "default",
+    "notebook.output.fontFamily": "JetBrains Mono",
+    "chat.editor.fontFamily": "JetBrains Mono",
+    "gitlens.currentLine.fontFamily": "default",
+    "gitlens.blame.fontFamily": "default",
+    "markdown.preview.fontFamily": "default",
+    "mssql.resultsFontFamily": "JetBrains Mono",
+    "pgsql.resultsFontFamily": "JetBrains Mono",
+    "editor.inlayHints.fontFamily": "JetBrains Mono",
+    "notebook.markup.fontFamily": "JetBrains Mono",
+    "terminal.integrated.fontSize": 14,
+    "editor.fontSize": 14,
+    "scm.inputFontSize": 14,
+    "debug.console.fontSize": 14,
+    "editor.codeLensFontSize": 14,
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.tokenColorCustomizations": {
+        "[*Light*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#000"
+                    }
+                }
+            ]
+        },
+        "[*Dark*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#fff"
+                    }
+                }
+            ]
+        },
+        "textMateRules": []
+    },
+    "prettier.useEditorConfig": false,
+    "editorconfig.generateAuto": false,
+    "window.confirmSaveUntitledWorkspace": false,
+    "prettier.printWidth": 120,
+    "prettier.tabWidth": 4,
+    "powershell.promptToUpdatePowerShell": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "githubPullRequests.createOnPublishBranch": "never",
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "darkriszty.markdown-table-prettify",
+        "diffEditor.ignoreTrimWhitespace": false
+    },
+    "workbench.secondarySideBar.showLabels": false,
+    "terminal.integrated.fontLigatures.enabled": true,
+    "window.newWindowProfile": "Default",
+    "editor.linkedEditing": true,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "docker.extension.enableComposeLanguageServer": false,
+    "redhat.telemetry.enabled": false,
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "docker.extension.dockerEngineAvailabilityPrompt": false,
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.svg": "default"
+    },
+    "[dockercompose]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        },
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "editor.multiCursorLimit": 100000,
+    "http.systemCertificatesNode": true
+}

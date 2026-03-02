@@ -1,0 +1,44 @@
+{
+    "catppuccin-icons.specificFolders": true,
+    "catppuccin-icons.monochrome": true,
+    "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-dark",
+    "workbench.colorTheme": "GitHub Dark",
+    "workbench.startupEditor": "none",
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "explorer.confirmPasteNative": false,
+    "terminal.integrated.fontFamily": "JetBrains Mono",
+    "editor.fontFamily": "JetBrains Mono",
+    "scm.inputFontFamily": "JetBrains Mono",
+    "debug.console.fontFamily": "JetBrains Mono",
+    "editor.codeLensFontFamily": "JetBrains Mono",
+    "editor.inlineSuggest.fontFamily": "default",
+    "notebook.output.fontFamily": "JetBrains Mono",
+    "chat.editor.fontFamily": "JetBrains Mono",
+    "markdown.preview.fontFamily": "default",
+    "editor.inlayHints.fontFamily": "JetBrains Mono",
+    "notebook.markup.fontFamily": "JetBrains Mono",
+    "terminal.integrated.fontSize": 14,
+    "editor.fontSize": 14,
+    "scm.inputFontSize": 14,
+    "debug.console.fontSize": 14,
+    "editor.codeLensFontSize": 14,
+    "editor.gotoLocation.multipleDefinitions": "goto",
+    "editor.fontVariations": false,
+    "editor.fontLigatures": true,
+    "editor.linkedEditing": true,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.inlineSuggest.enabled": true,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    },
+    "workbench.editorAssociations": {
+        "*.VSIXPackage": "default"
+    }
+}
