@@ -9,6 +9,17 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 echo "###############################################################"
+echo "# [ARCH-INSTALL-SCRIPT] Enabling multilib."
+echo "###############################################################"
+if grep -q "^\[multilib\]" /etc/pacman.conf; then
+    echo "multilib is already active."
+else
+    echo "Enabling multilib..."
+    sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+    sudo pacman -Sy --noconfirm
+fi
+
+echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Install/Update yay AUR helper."
 echo "###############################################################"
 if ! command -v yay &> /dev/null; then

@@ -57,7 +57,7 @@ sudo pacman -Rs --noconfirm gnome-contacts gnome-weather gnome-characters gnome-
 echo "###############################################################"
 echo "# [ARCH-INSTALL-SCRIPT] Installing graphics drivers."
 echo "###############################################################"
-install_gpu_nvidia()  { pacman -Syu --noconfirm nvidia-dkms nvidia-settings; }
+install_gpu_nvidia()  { pacman -Syu --noconfirm linux-headers nvidia-dkms nvidia-utils egl-wayland; }
 install_gpu_amd()    { pacman -Syu --noconfirm xf86-video-amdgpu vulkan-radeon libva-mesa-driver; }
 install_gpu_intel()  { pacman -Syu --noconfirm xf86-video-intel vulkan-intel; }
 
