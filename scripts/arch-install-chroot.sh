@@ -11,13 +11,13 @@ if [[ -z "$username" ]]; then
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Enabling multilib repository."
+echo "# [BTW-I-USE-ARCH] Enabling multilib repository."
 echo "###############################################################"
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Sy --noconfirm
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Configuring locale and hostname."
+echo "# [BTW-I-USE-ARCH] Configuring locale and hostname."
 echo "###############################################################"
 ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
 hwclock --systohc
@@ -37,7 +37,7 @@ for domain in $localdomains; do
 done
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Creating user $username."
+echo "# [BTW-I-USE-ARCH] Creating user $username."
 echo "###############################################################"
 pacman -Syu --noconfirm zsh
 useradd -m -G wheel,users -s /usr/bin/zsh "$username"
@@ -45,7 +45,7 @@ echo "$username:$userpass" | chpasswd
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing base packages."
+echo "# [BTW-I-USE-ARCH] Installing base packages."
 echo "###############################################################"
 pacman -Syu --noconfirm \
 git base-devel pciutils acpid btrfs-progs iwd llvm networkmanager snapper grub-btrfs os-prober efibootmgr ntfs-3g \
@@ -61,7 +61,7 @@ system-config-printer cups cups-browsed cups-filters networkmanager-openvpn
 sudo pacman -Rs --noconfirm gnome-contacts gnome-weather gnome-characters gnome-music gnome-maps gnome-tour gnome-console epiphany gnome-software
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing graphics drivers."
+echo "# [BTW-I-USE-ARCH] Installing graphics drivers."
 echo "###############################################################"
 has_nvidia=0
 
@@ -98,7 +98,7 @@ fi
 
 if [[ $has_nvidia -eq 1 ]]; then
     echo "###############################################################"
-    echo "# [ARCH-INSTALL-SCRIPT] Configuring NVIDIA kernel parameters."
+    echo "# [BTW-I-USE-ARCH] Configuring NVIDIA kernel parameters."
     echo "###############################################################"
     if grep -q "^GRUB_CMDLINE_LINUX_DEFAULT=" /etc/default/grub; then
         current=$(grep "^GRUB_CMDLINE_LINUX_DEFAULT=" /etc/default/grub | sed 's/^GRUB_CMDLINE_LINUX_DEFAULT="//;s/"$//')
@@ -114,7 +114,7 @@ if [[ $has_nvidia -eq 1 ]]; then
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing Oh My Zsh and plugins for user $username."
+echo "# [BTW-I-USE-ARCH] Installing Oh My Zsh and plugins for user $username."
 echo "###############################################################"
 export HOME=/home/$username
 sudo -u $username sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" "" --unattended
@@ -122,7 +122,7 @@ sudo -u $username git clone https://github.com/zsh-users/zsh-autosuggestions /ho
 sudo -u $username git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$username/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing web browsers and multimedia applications."
+echo "# [BTW-I-USE-ARCH] Installing web browsers and multimedia applications."
 echo "###############################################################"
 pacman -Syu --noconfirm \
 chromium firefox vlc vlc-plugins-all
@@ -182,7 +182,7 @@ sudo -u $username dbus-launch gsettings set org.gnome.desktop.default-applicatio
 localectl set-x11-keymap fr
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Configuring and enabling services."
+echo "# [BTW-I-USE-ARCH] Configuring and enabling services."
 echo "###############################################################"
 mkdir -p /etc/NetworkManager/conf.d
 printf "[device]\nwifi.backend=iwd\n" > /etc/NetworkManager/conf.d/wifi_backend.conf
@@ -196,7 +196,7 @@ systemctl enable acpid
 systemctl enable gdm
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Configuring snapshots."
+echo "# [BTW-I-USE-ARCH] Configuring snapshots."
 echo "###############################################################"
 umount /.snapshots 2>/dev/null || true
 rm -rf /.snapshots

@@ -13,7 +13,7 @@ profiles=(
 )
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Configuring VSCodium profiles."
+echo "# [BTW-I-USE-ARCH] Configuring VSCodium profiles."
 echo "###############################################################"
 
 mkdir -p "$VSCODIUM_DIR"
@@ -60,7 +60,7 @@ EOF
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing VSCodium extensions."
+echo "# [BTW-I-USE-ARCH] Installing VSCodium extensions."
 echo "###############################################################"
 
 install_extensions() {

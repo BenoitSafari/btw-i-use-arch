@@ -1,5 +1,5 @@
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing Node (Node Version Switcher)."
+echo "# [BTW-I-USE-ARCH] Installing Node (Node Version Switcher)."
 echo "###############################################################"
 
 export NVS_HOME="$HOME/.nvs"

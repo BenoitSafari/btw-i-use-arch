@@ -19,8 +19,8 @@ ping -c4 www.archlinux.org
 ## Installation
 
 ```bash
-git clone https://github.com/BenoitSafari/arch-install-script.git
-cd ./arch-install-script
+git clone https://github.com/BenoitSafari/btw-i-use-arch.git
+cd ./btw-i-use-arch
 chmod +x arch-install.sh
 bash arch-install.sh
 ```
@@ -79,8 +79,8 @@ Number  Size      Code  Name
 After rebooting into your fresh Arch install, clone the repo again and run:
 
 ```bash
-git clone https://github.com/BenoitSafari/arch-install-script.git
-cd ./arch-install-script
+git clone https://github.com/BenoitSafari/btw-i-use-arch.git
+cd ./btw-i-use-arch
 chmod +x arch-post-install.sh
 bash arch-post-install.sh
 ```

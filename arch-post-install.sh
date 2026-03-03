@@ -2,14 +2,14 @@
 
 if [ "$(id -u)" -eq 0 ]; then
     echo "################################################################"
-    echo "# [ARCH-INSTALL-SCRIPT]"
+    echo "# [BTW-I-USE-ARCH]"
     echo "# This script should not be used as root!"
     echo "################################################################"
     exit 1
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Install/Update yay AUR helper."
+echo "# [BTW-I-USE-ARCH] Install/Update yay AUR helper."
 echo "###############################################################"
 if ! command -v yay &> /dev/null; then
     cd /tmp
@@ -21,7 +21,7 @@ if ! command -v yay &> /dev/null; then
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing & Configuring Snapd (AUR)."
+echo "# [BTW-I-USE-ARCH] Installing & Configuring Snapd (AUR)."
 echo "###############################################################"
 yay -S --noconfirm --needed snapd
 sudo systemctl enable --now snapd.socket
@@ -31,12 +31,12 @@ if [ ! -L /snap ]; then
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing pamac."
+echo "# [BTW-I-USE-ARCH] Installing pamac."
 echo "###############################################################"
 yay -S --noconfirm libpamac-full pamac-cli pamac
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Configuring Pamac features."
+echo "# [BTW-I-USE-ARCH] Configuring Pamac features."
 echo "###############################################################"
 PAMAC_CONF="/etc/pamac.conf"
 
@@ -66,6 +66,6 @@ chmod +x ./scripts/arch-post-install-*.sh
 ./scripts/arch-post-install-node.sh
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Post-install complete!"
+echo "# [BTW-I-USE-ARCH] Post-install complete!"
 echo "###############################################################"
 echo "You can now reboot your machine and brag about being an Arch user!"

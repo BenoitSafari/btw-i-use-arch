@@ -14,7 +14,7 @@ done
 timedatectl set-ntp true
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Setup your partitions."
+echo "# [BTW-I-USE-ARCH] Setup your partitions."
 echo "###############################################################"
 echo "This script is for French users and will configure the system locale and keyboard accordingly."
 source ./scripts/arch-install-partition.sh "$@"
@@ -51,7 +51,7 @@ while true; do
 done
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Arch Linux base installation will begin now."
+echo "# [BTW-I-USE-ARCH] Arch Linux base installation will begin now."
 echo "###############################################################"
 pacstrap /mnt base base-devel linux linux-firmware intel-ucode amd-ucode sudo rsync reflector wget util-linux shadow git
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -59,7 +59,7 @@ timedatectl set-ntp true
 reflector --country $country --protocol https --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Entering chroot to configure the system..."
+echo "# [BTW-I-USE-ARCH] Entering chroot to configure the system..."
 echo "###############################################################"
 
 script_target=/mnt/root/arch-install-chroot.sh
@@ -69,7 +69,7 @@ arch-chroot /mnt /root/arch-install-chroot.sh "$username" "$userpass" "$gpu_prof
 rm -f $script_target
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Copy configuration files."
+echo "# [BTW-I-USE-ARCH] Copy configuration files."
 echo "###############################################################"
 echo "Importing configuration files for user $username."
 
@@ -85,7 +85,7 @@ arch-chroot /mnt chown -R "$username":"$username" /home/"$username"
 echo ""
 echo ""
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installation complete."
+echo "# [BTW-I-USE-ARCH] Installation complete."
 echo "###############################################################"
 echo "Press any key to unmount partitions and reboot into your new Arch Linux system."
 

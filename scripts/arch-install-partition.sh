@@ -27,7 +27,7 @@ for arg in "$@"; do
 done
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Setup your partitions."
+echo "# [BTW-I-USE-ARCH] Setup your partitions."
 echo "###############################################################"
 echo "This script will format and mount partitions for Arch Linux."
 
@@ -113,7 +113,7 @@ if [[ -z "$partroot" || -z "$partswap" || -z "$partefi" ]]; then
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Will now format partitions."
+echo "# [BTW-I-USE-ARCH] Will now format partitions."
 echo "###############################################################"
 
 mkswap "$partswap"
@@ -128,7 +128,7 @@ else
 fi
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Creating Btrfs subvolumes and mounting partitions."
+echo "# [BTW-I-USE-ARCH] Creating Btrfs subvolumes and mounting partitions."
 echo "###############################################################"
 mount "$partroot" /mnt
 btrfs subvolume create /mnt/@

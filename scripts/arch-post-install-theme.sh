@@ -25,9 +25,10 @@ user_ext=(
     gnome-shell-extension-blur-my-shell
     gnome-shell-extension-lan-ip-address-git 
     gnome-shell-extension-rounded-window-corners-reborn-git
+    gnome-shell-extension-top-bar-organizer
 )
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing user desktop extensions."
+echo "# [BTW-I-USE-ARCH] Installing user desktop extensions."
 echo "###############################################################"
 yay -S --noconfirm ${user_ext[@]}

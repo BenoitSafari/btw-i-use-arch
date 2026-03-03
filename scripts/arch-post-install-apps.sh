@@ -36,16 +36,16 @@ user_apps=(
 )
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing user apps from official repositories."
+echo "# [BTW-I-USE-ARCH] Installing user apps from official repositories."
 echo "###############################################################"
 sudo pacman -Syu --noconfirm "${user_apps[@]}"
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing AUR apps."
+echo "# [BTW-I-USE-ARCH] Installing AUR apps."
 echo "###############################################################"
 yay -S --noconfirm --needed "${user_apps_aur[@]}"
 
 echo "###############################################################"
-echo "# [ARCH-INSTALL-SCRIPT] Installing Snap apps."
+echo "# [BTW-I-USE-ARCH] Installing Snap apps."
 echo "###############################################################"
 sudo snap install "${user_apps_snap[@]}"
