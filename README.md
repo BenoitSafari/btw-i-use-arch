@@ -1,6 +1,6 @@
 # BTW I use Arch
 
-Automated Arch Linux installation and post-installation scripts with Btrfs, GNOME, Snapper snapshots and a curated selection of developer tools.
+Automated Arch Linux installation and post-installation scripts with Btrfs, KDE Plasma, Snapper snapshots and a curated selection of developer tools.
 
 ## Prerequisites
 
@@ -85,4 +85,4 @@ chmod +x arch-post-install.sh
 bash arch-post-install.sh
 ```
 
-This installs yay, snapd, pamac, various dev tools, GNOME extensions, themes, and Node.js.
+This installs yay, snapd, pamac, various dev tools and Node.js.

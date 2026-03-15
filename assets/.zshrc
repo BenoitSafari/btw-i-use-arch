@@ -13,6 +13,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 alias ls='ls -lah'
-alias explore='nautilus'
+alias grub-build-cfg='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 
 [[ -z "$TERMINAL_EMULATOR" ]] && fastfetch

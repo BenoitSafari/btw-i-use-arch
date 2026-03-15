@@ -2,8 +2,6 @@
 
 user_apps_aur=(
     brave-bin
-    p7zip-gui
-    pinta
     jre
     rider
     jetbrains-toolbox
