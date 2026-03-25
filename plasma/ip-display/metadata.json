@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Id": "com.benoitsafari.ipdisplay",
+        "Name": "IP Display",
+        "Description": "Shows local and public IP addresses in the panel",
+        "Icon": "network-wired",
+        "Authors": [
+            {
+                "Name": "BenoitSafari"
+            }
+        ],
+        "Category": "System Information",
+        "Version": "0.1.0"
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml",
+    "KPackageStructure": "Plasma/Applet"
+}
