@@ -9,7 +9,6 @@ PlasmoidItem {
     id: root
 
     preferredRepresentation: compactRepresentation
-    Layout.preferredWidth: compactRow.implicitWidth + Kirigami.Units.smallSpacing * 2
 
     property string localIp: "..."
     property string publicIp: "..."
@@ -46,7 +45,7 @@ PlasmoidItem {
             Layout.preferredHeight: Kirigami.Units.iconSizes.small
         }
         PlasmaComponents.Label {
-            text: root.localIp
+            text: root.localIp + " | " + root.publicIp
             font.pixelSize: Kirigami.Theme.smallFont.pixelSize
             font.bold: true
         }

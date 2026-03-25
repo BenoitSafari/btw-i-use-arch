@@ -64,6 +64,11 @@ bash ./scripts/arch-post-install-vscodium.sh
 bash ./scripts/arch-post-install-node.sh
 
 echo "###############################################################"
+echo "# [BTW-I-USE-ARCH] Installing KDE Plasma widgets."
+echo "###############################################################"
+bash ./update-kde-widgets.sh
+
+echo "###############################################################"
 echo "# [BTW-I-USE-ARCH] Post-install complete!"
 echo "###############################################################"
 echo "You can now reboot your machine and brag about being an Arch user!"
