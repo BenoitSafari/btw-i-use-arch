@@ -112,6 +112,12 @@ PlasmoidItem {
             return (bytesPerSec / (1024 * 1024)).toFixed(1) + " MB";
     }
 
+    FontMetrics {
+        id: labelMetrics
+        font.pixelSize: Kirigami.Theme.smallFont.pixelSize
+        font.bold: true
+    }
+
     fullRepresentation: RowLayout {
         id: row
         spacing: Kirigami.Units.mediumSpacing
@@ -121,6 +127,7 @@ PlasmoidItem {
             text: "CPU: " + Math.round(root.cpuUsage) + "%"
             font.pixelSize: Kirigami.Theme.smallFont.pixelSize
             font.bold: true
+            Layout.preferredWidth: labelMetrics.advanceWidth("CPU: 100%")
         }
 
         // RAM
@@ -128,6 +135,7 @@ PlasmoidItem {
             text: "RAM: " + Math.round(root.ramUsage) + "%"
             font.pixelSize: Kirigami.Theme.smallFont.pixelSize
             font.bold: true
+            Layout.preferredWidth: labelMetrics.advanceWidth("RAM: 100%")
         }
 
         // Swap
@@ -135,6 +143,7 @@ PlasmoidItem {
             text: "SWAP: " + Math.round(root.swapUsage) + "%"
             font.pixelSize: Kirigami.Theme.smallFont.pixelSize
             font.bold: true
+            Layout.preferredWidth: labelMetrics.advanceWidth("SWAP: 100%")
         }
 
         // Upload
@@ -149,6 +158,7 @@ PlasmoidItem {
                 text: formatSpeed(root.uploadSpeed)
                 font.pixelSize: Kirigami.Theme.smallFont.pixelSize
                 font.bold: true
+                Layout.preferredWidth: labelMetrics.advanceWidth("9999.9 MB")
             }
         }
 
@@ -164,6 +174,7 @@ PlasmoidItem {
                 text: formatSpeed(root.downloadSpeed)
                 font.pixelSize: Kirigami.Theme.smallFont.pixelSize
                 font.bold: true
+                Layout.preferredWidth: labelMetrics.advanceWidth("9999.9 MB")
             }
         }
     }

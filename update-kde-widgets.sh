@@ -7,6 +7,7 @@ TYPE="Plasma/Applet"
 WIDGETS=(
     "com.benoitsafari.ipdisplay:plasma/ip-display"
     "com.benoitsafari.systemmonitorbar:plasma/system-monitor-bar"
+    "com.benoitsafari.diskusage:plasma/disk-usage"
 )
 
 echo "###############################################################"
