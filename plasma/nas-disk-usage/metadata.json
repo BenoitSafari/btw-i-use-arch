@@ -1,0 +1,17 @@
+{
+    "KPlugin": {
+        "Id": "com.benoitsafari.nasdiskusage",
+        "Name": "NAS Disk Usage",
+        "Description": "Remote disk usage from a NAS via SSH + df",
+        "Icon": "network-server-database",
+        "Authors": [
+            {
+                "Name": "BenoitSafari"
+            }
+        ],
+        "Category": "System Information",
+        "Version": "0.1.0"
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

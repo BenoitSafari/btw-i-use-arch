@@ -35,6 +35,11 @@ PlasmoidItem {
         }
     }
 
+    function refreshIps() {
+        localIpSource.connectSource(localIpSource.connectedSources[0]);
+        publicIpSource.connectSource(publicIpSource.connectedSources[0]);
+    }
+
     compactRepresentation: RowLayout {
         id: compactRow
         spacing: Kirigami.Units.smallSpacing
@@ -48,6 +53,12 @@ PlasmoidItem {
             text: root.localIp + " | " + root.publicIp
             font.pixelSize: Kirigami.Theme.smallFont.pixelSize
             font.bold: true
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton
+            onClicked: root.refreshIps()
         }
     }
 
@@ -114,10 +125,7 @@ PlasmoidItem {
             text: "Refresh"
             icon.name: "view-refresh"
             Layout.alignment: Qt.AlignHCenter
-            onClicked: {
-                localIpSource.connectSource(localIpSource.connectedSources[0]);
-                publicIpSource.connectSource(publicIpSource.connectedSources[0]);
-            }
+            onClicked: root.refreshIps()
         }
     }
 }

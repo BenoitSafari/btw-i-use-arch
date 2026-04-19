@@ -31,6 +31,7 @@ user_apps=(
     dotnet-targeting-pack
     steam
     prismlauncher
+    sshpass
 )
 
 echo "###############################################################"
