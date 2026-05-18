@@ -85,4 +85,4 @@ chmod +x arch-post-install.sh
 bash arch-post-install.sh
 ```
 
-This installs yay, snapd, pamac, various dev tools and Node.js.
+This installs yay, snapd, pamac, various dev tools and the Node.js stack (nodejs, npm, pnpm) with a `minimum-release-age` of 3 days as a supply-chain mitigation.
