@@ -2,18 +2,16 @@
 
 user_apps_aur=(
     brave-bin
-    p7zip-gui
-    pinta
     jre
     rider
-    jetbrains-toolbox
+    webstorm
+    webstorm-jre
+    datagrip
+    datagrip-jre
     vscodium-bin
     vscodium-marketplace
+    vesktop-bin
     teams-for-linux-bin
-)
-
-user_apps_snap=(
-    discord
 )
 
 user_apps=(
@@ -33,6 +31,7 @@ user_apps=(
     dotnet-targeting-pack
     steam
     prismlauncher
+    sshpass
 )
 
 echo "###############################################################"
@@ -44,8 +43,3 @@ echo "###############################################################"
 echo "# [BTW-I-USE-ARCH] Installing AUR apps."
 echo "###############################################################"
 yay -S --noconfirm --needed "${user_apps_aur[@]}"
-
-echo "###############################################################"
-echo "# [BTW-I-USE-ARCH] Installing Snap apps."
-echo "###############################################################"
-sudo snap install "${user_apps_snap[@]}"

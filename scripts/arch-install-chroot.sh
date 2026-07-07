@@ -54,11 +54,8 @@ ffmpeg poppler iputils fontconfig jq wireless-regdb fzf pipewire-pulse wireplumb
 kitty fastfetch ffmpegthumbnailer imv man-db tldr nano wget \
 noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-bitstream-vera \
 ttf-cascadia-mono-nerd ttf-fira-mono ttf-firacode-nerd ttf-liberation \
-ttf-opensans ttf-roboto woff2-font-awesome ttf-jetbrains-mono-nerd papirus-icon-theme \
-gnome gnome-themes-extra gdm gnome-shell-extensions gnome-browser-connector xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
-system-config-printer cups cups-browsed cups-filters networkmanager-openvpn
-
-sudo pacman -Rs --noconfirm gnome-contacts gnome-weather gnome-characters gnome-music gnome-maps gnome-tour gnome-console epiphany gnome-software
+ttf-opensans ttf-roboto woff2-font-awesome ttf-jetbrains-mono-nerd \
+plasma sddm xdg-desktop-portal-kde dolphin konsole spectacle ark okular gwenview kate networkmanager-openvpn
 
 echo "###############################################################"
 echo "# [BTW-I-USE-ARCH] Installing graphics drivers."
@@ -66,11 +63,11 @@ echo "###############################################################"
 has_nvidia=0
 
 install_gpu_nvidia() {
-    pacman -Syu --noconfirm linux-headers nvidia-dkms nvidia-utils egl-wayland
+    pacman -Syu --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils egl-wayland vulkan-icd-loader lib32-vulkan-icd-loader
     has_nvidia=1
 }
-install_gpu_amd()    { pacman -Syu --noconfirm xf86-video-amdgpu vulkan-radeon libva-mesa-driver; }
-install_gpu_intel()  { pacman -Syu --noconfirm xf86-video-intel vulkan-intel; }
+install_gpu_amd()    { pacman -Syu --noconfirm xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader; }
+install_gpu_intel()  { pacman -Syu --noconfirm xf86-video-intel vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader; }
 
 if [[ -n "$gpu_profile" ]]; then
     echo "GPU profile(s) specified: $gpu_profile"
@@ -111,6 +108,13 @@ if [[ $has_nvidia -eq 1 ]]; then
     else
         echo 'GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet nvidia_drm.modeset=1 nvidia_drm.fbdev=1"' >> /etc/default/grub
     fi
+
+    echo "###############################################################"
+    echo "# [BTW-I-USE-ARCH] Configuring NVIDIA early KMS for Wayland."
+    echo "###############################################################"
+    sed -i 's/^MODULES=(\(.*\))/MODULES=(\1 nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+    sed -i 's/MODULES=( /MODULES=(/' /etc/mkinitcpio.conf
+    mkinitcpio -P
 fi
 
 echo "###############################################################"
@@ -127,21 +131,6 @@ echo "###############################################################"
 pacman -Syu --noconfirm \
 chromium firefox vlc vlc-plugins-all
 
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface font-antialiasing 'rgba'
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface font-hinting 'slight'
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.wm.preferences action-double-click-titlebar 'toggle-maximize'
-sudo -u $username dbus-launch gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
-sudo -u $username dbus-launch gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
-sudo -u $username dbus-launch gsettings set org.gnome.nautilus.preferences migrated-gtk-settings true
-sudo -u $username dbus-launch gsettings set org.gnome.mutter center-new-windows true
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.privacy remember-recent-files false
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface show-battery-percentage true
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface cursor-size 24
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fr')]"
-
 mkdir -p /etc/X11/xorg.conf.d
 cat <<EOF > /etc/X11/xorg.conf.d/00-keyboard.conf
 Section "InputClass"
@@ -150,36 +139,14 @@ Section "InputClass"
         Option "XkbLayout" "fr"
 EndSection
 EOF
-mkdir -p /etc/dconf/profile
-cat <<EOF > /etc/dconf/profile/gdm
-user-db:user
-system-db:gdm
-file-db:/usr/share/gdm/greeter-dconf-defaults
-EOF
-mkdir -p /etc/dconf/db/gdm.d
-cat <<EOF > /etc/dconf/db/gdm.d/01-keyboard
-[org/gnome/desktop/input-sources]
-sources=[('xkb', 'fr')]
-EOF
-dconf update
 
-sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'suspend'
-sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.power idle-dim true
-sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend'
-sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 900
-sudo -u $username dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.interface show-battery-percentage true
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.session idle-delay 0
-
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad click-method 'areas'
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 
 mkdir -p /usr/local/bin
 ln -sf /usr/bin/kitty /usr/local/bin/x-terminal-emulator
-sudo -u $username dbus-launch gsettings set org.gnome.desktop.default-applications.terminal exec-arg '-e'
 
-localectl set-x11-keymap fr
+sudo -u $username mkdir -p /home/$username/.config
+sudo -u $username kwriteconfig6 --file kdeglobals --group General --key TerminalApplication kitty
+sudo -u $username kwriteconfig6 --file kdeglobals --group General --key TerminalService kitty.desktop
 
 echo "###############################################################"
 echo "# [BTW-I-USE-ARCH] Configuring and enabling services."
@@ -193,7 +160,7 @@ systemctl enable cups
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable acpid
-systemctl enable gdm
+systemctl enable sddm
 
 echo "###############################################################"
 echo "# [BTW-I-USE-ARCH] Configuring snapshots."

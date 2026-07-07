@@ -33,7 +33,7 @@ fi
 echo "###############################################################"
 echo "# [BTW-I-USE-ARCH] Installing pamac."
 echo "###############################################################"
-yay -S --noconfirm libpamac-full pamac-cli pamac
+yay -S --noconfirm libpamac-full pamac-cli pamac pamac-tray-icon-plasma
 
 echo "###############################################################"
 echo "# [BTW-I-USE-ARCH] Configuring Pamac features."
@@ -58,12 +58,15 @@ else
     sudo sed -i 's/#EnableFlatpak/EnableFlatpak/' "$PAMAC_CONF"
 fi
 
-cp ./assets/kitty.desktop ~/.local/share/applications/kitty.desktop
 chmod +x ./scripts/arch-post-install-*.sh
 bash ./scripts/arch-post-install-apps.sh
 bash ./scripts/arch-post-install-vscodium.sh
-bash ./scripts/arch-post-install-theme.sh
 bash ./scripts/arch-post-install-node.sh
+
+echo "###############################################################"
+echo "# [BTW-I-USE-ARCH] Installing KDE Plasma widgets."
+echo "###############################################################"
+bash ./update-kde-widgets.sh
 
 echo "###############################################################"
 echo "# [BTW-I-USE-ARCH] Post-install complete!"

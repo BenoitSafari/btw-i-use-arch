@@ -1,0 +1,17 @@
+{
+    "KPlugin": {
+        "Id": "com.benoitsafari.diskusage",
+        "Name": "Disk Usage",
+        "Description": "Tree view of disk/partition space usage",
+        "Icon": "drive-harddisk",
+        "Authors": [
+            {
+                "Name": "BenoitSafari"
+            }
+        ],
+        "Category": "System Information",
+        "Version": "0.1.0"
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

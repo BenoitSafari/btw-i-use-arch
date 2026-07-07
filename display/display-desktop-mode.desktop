@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Display: Desktop Mode
+GenericName=Iiyama only
+Comment=Iiyama only — 3440×1440 @ 120 Hz
+Exec=/home/benoitsafari/.local/share/display/desktop-mode.sh
+Icon=video-display
+Terminal=false
+Categories=Settings;HardwareSettings;
+Keywords=display;screen;monitor;iiyama;desktop;kscreen;

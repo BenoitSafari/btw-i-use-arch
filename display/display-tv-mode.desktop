@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Display: TV Mode
+GenericName=Cloned TV
+Comment=Cloned TV — 3840×2160 @ 60 Hz
+Exec=/home/benoitsafari/.local/share/display/tv-mode.sh
+Icon=video-television
+Terminal=false
+Categories=Settings;HardwareSettings;
+Keywords=display;screen;tv;clone;mirror;kscreen;
