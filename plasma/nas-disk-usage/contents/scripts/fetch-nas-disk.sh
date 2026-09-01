@@ -6,8 +6,9 @@
 #   { "host": "nas.local", "port": 22, "user": "admin", "paths": ["/volume1","/volume2"] }
 #   `paths` is optional — if omitted, all /volumeN mounts are reported.
 #
-# Password must be stored in KWallet under folder "asustor-<user>-pwd", key "nas_password":
-#   kwallet-query -w nas_password -f asustor-<user>-pwd kdewallet <<< 'secret'
+# Password must be stored in KWallet under folder "asustor-<user>-pwd", key "nas_password".
+# Use the helper, which prompts without echoing and verifies the write:
+#   bash scripts/set-nas-password.sh
 
 CONFIG="$HOME/.config/btw-i-use-arch/nas.json"
 
@@ -22,14 +23,14 @@ command -v kwallet-query >/dev/null || emit_error "kwallet-query not found"
 [[ -f "$CONFIG" ]] || emit_error "config missing: $CONFIG"
 
 HOST=$(jq -r '.host // ""' "$CONFIG")
-USER=$(jq -r '.user // ""' "$CONFIG")
+NAS_USER=$(jq -r '.user // ""' "$CONFIG")
 PORT=$(jq -r '.port // 22' "$CONFIG")
 PATHS=$(jq -r '.paths // [] | join(" ")' "$CONFIG")
 
 [[ -z "$HOST" ]] && emit_error "host missing in config"
-[[ -z "$USER" ]] && emit_error "user missing in config"
+[[ -z "$NAS_USER" ]] && emit_error "user missing in config"
 
-WALLET_FOLDER="asustor-${USER}-pwd"
+WALLET_FOLDER="asustor-${NAS_USER}-pwd"
 if ! PASS=$(kwallet-query -r nas_password -f "$WALLET_FOLDER" kdewallet 2>/dev/null); then
     emit_error "KWallet folder '$WALLET_FOLDER' or key 'nas_password' missing (run: kwallet-query -w nas_password -f $WALLET_FOLDER kdewallet)"
 fi
@@ -42,8 +43,8 @@ else
 fi
 
 SSH_OPTS=(-o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new -p "$PORT")
-SSH_OUT=$(SSHPASS="$PASS" sshpass -e ssh "${SSH_OPTS[@]}" "$USER@$HOST" "$REMOTE" 2>/dev/null)
-[[ $? -ne 0 ]] && emit_error "SSH connection failed (host=$HOST port=$PORT user=$USER)"
+SSH_OUT=$(SSHPASS="$PASS" sshpass -e ssh "${SSH_OPTS[@]}" "$NAS_USER@$HOST" "$REMOTE" 2>/dev/null)
+[[ $? -ne 0 ]] && emit_error "SSH connection failed (host=$HOST port=$PORT user=$NAS_USER)"
 
 VOLUMES=$(echo "$SSH_OUT" | awk '
     NR > 1 && NF >= 5 {
