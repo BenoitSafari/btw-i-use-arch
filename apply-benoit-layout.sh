@@ -331,7 +331,25 @@ EOF
 
         # Harmless if already enabled; never --now, that would kill this session.
         run sudo systemctl enable sddm.service
-        echo "  Theme: $SDDM_THEME, background: $SDDM_THEME_DIR/wallpaper.jpg"
+
+        # Any other file setting a theme can win over ours depending on read
+        # order, which looks exactly like "the login screen did not change".
+        conflicts="$(grep -lsE '^[[:space:]]*Current[[:space:]]*=' \
+                     /etc/sddm.conf /etc/sddm.conf.d/*.conf 2>/dev/null \
+                     | grep -vFx "$SDDM_CONF")"
+        if [[ -n "$conflicts" ]]; then
+            warn "Other SDDM config files also set a theme:"
+            warn "$(tr '\n' ' ' <<<"$conflicts")"
+            warn "Remove the Current= line from them if the login screen keeps its old look."
+        fi
+
+        if (( ! DRY_RUN )); then
+            echo "  Theme now: $(kreadconfig6 --file "$SDDM_CONF" --group Theme --key Current 2>/dev/null)"
+            [[ -f "$SDDM_THEME_DIR/wallpaper.jpg" ]] \
+                && echo "  Background in place: $SDDM_THEME_DIR/wallpaper.jpg" \
+                || warn "Background missing at $SDDM_THEME_DIR/wallpaper.jpg"
+        fi
+        echo "  Takes effect on the next SDDM start (log out or reboot)."
     fi
 else
     banner "Skipping the login screen setup (--no-login-screen)."
