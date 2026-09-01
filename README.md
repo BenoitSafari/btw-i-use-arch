@@ -89,7 +89,7 @@ This installs yay, snapd, pamac, various dev tools and the Node.js stack (nodejs
 
 ## Desktop layout
 
-Reproduces the reference KDE Plasma 6 desktop — panels, global theme, fonts, wallpaper and every custom widget — on a fresh install. Run it from inside a Plasma session (not as root):
+Reproduces the reference KDE Plasma 6 desktop — panels, global theme, fonts, wallpaper, screen locking, SDDM login screen and every custom widget — on a fresh install. Run it from inside a Plasma session (not as root):
 
 ```bash
 bash apply-benoit-layout.sh
@@ -104,6 +104,7 @@ The previous configuration is backed up to `~/.local/share/btw-i-use-arch/kde-ba
 | `--no-icons` | Skip the Tela icon theme download | install |
 | `--no-widgets` | Skip the custom + third-party plasmoids | install |
 | `--no-nas` | Leave the NAS disk usage widget out of the top panel | included |
+| `--no-login-screen` | Skip the SDDM setup — the only step needing `sudo` beyond packages | configure |
 | `--panel-margin=<px>` | Side margin of the top panel | `40` |
 | `--thermal-sensor=<id>` | ksystemstats sensor for the Thermal Monitor widget | `cpu/all/averageTemperature` |
 

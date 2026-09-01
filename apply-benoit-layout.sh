@@ -7,6 +7,7 @@
 #   --no-icons              Skip the Tela icon theme download
 #   --no-widgets            Skip installing the custom + third-party plasmoids
 #   --no-nas                Drop the NAS disk usage widget from the top panel
+#   --no-login-screen       Skip the SDDM login screen setup (avoids sudo)
 #   --panel-margin=<px>     Side margin of the top panel (default: 40)
 #   --thermal-sensor=<id>   ksystemstats sensor for the thermal widget
 #                           (default: cpu/all/averageTemperature ;
@@ -28,7 +29,9 @@ BACKUP_DIR="$HOME/.local/share/btw-i-use-arch/kde-backup-$(date +%Y%m%d-%H%M%S)"
 INSTALL_PACKAGES=1
 INSTALL_ICONS=1
 INSTALL_WIDGETS=1
+INSTALL_LOGIN=1
 WITH_NAS=1
+SDDM_THEME=breeze
 PANEL_MARGIN=40
 THERMAL_SENSOR="cpu/all/averageTemperature"
 THERMAL_LABEL="CPU Temperature"
@@ -64,6 +67,7 @@ for arg in "$@"; do
         --no-icons)         INSTALL_ICONS=0 ;;
         --no-widgets)       INSTALL_WIDGETS=0 ;;
         --no-nas)           WITH_NAS=0 ;;
+        --no-login-screen)  INSTALL_LOGIN=0 ;;
         --panel-margin=*)   PANEL_MARGIN="${arg#*=}" ;;
         --thermal-sensor=*) THERMAL_SENSOR="${arg#*=}" ;;
         --dry-run)          DRY_RUN=1 ;;
@@ -248,6 +252,66 @@ fi
 
 run mkdir -p "$HOME/.local/share/color-schemes"
 run cp -f "$COLORSCHEME_SRC" "$HOME/.local/share/color-schemes/AdwaitaDark.colors"
+
+###############################################################
+# Login screen (SDDM) — needs root
+###############################################################
+
+if (( INSTALL_LOGIN )); then
+    banner "Configuring the SDDM login screen."
+
+    SDDM_THEME_DIR="/usr/share/sddm/themes/$SDDM_THEME"
+    SDDM_CONF="/etc/sddm.conf.d/kde_settings.conf"
+
+    if [[ ! -d "$SDDM_THEME_DIR" ]]; then
+        warn "$SDDM_THEME_DIR not found — install the 'breeze' package first. Skipping."
+    else
+        [[ -f "$SDDM_CONF" ]] && run cp -a "$SDDM_CONF" "$BACKUP_DIR/sddm-kde_settings.conf"
+
+        # The Breeze SDDM theme reads its background from the theme directory,
+        # which is what the System Settings module does too.
+        if [[ -f "$WALLPAPER_SRC" ]]; then
+            run sudo install -m 644 "$WALLPAPER_SRC" "$SDDM_THEME_DIR/wallpaper.jpg"
+        fi
+
+        sddm_theme_conf="$(mktemp)"
+        cat > "$sddm_theme_conf" <<'EOF'
+[General]
+background=wallpaper.jpg
+showClock=true
+type=image
+EOF
+        run sudo install -m 644 "$sddm_theme_conf" "$SDDM_THEME_DIR/theme.conf.user"
+        rm -f "$sddm_theme_conf"
+
+        sddm_conf="$(mktemp)"
+        cat > "$sddm_conf" <<'EOF'
+[Autologin]
+Relogin=false
+Session=
+User=
+
+[General]
+HaltCommand=/usr/bin/systemctl poweroff
+RebootCommand=/usr/bin/systemctl reboot
+
+[Theme]
+Current=breeze
+
+[Users]
+MaximumUid=60513
+MinimumUid=1000
+EOF
+        run sudo install -Dm 644 "$sddm_conf" "$SDDM_CONF"
+        rm -f "$sddm_conf"
+
+        # Harmless if already enabled; never --now, that would kill this session.
+        run sudo systemctl enable sddm.service
+        echo "  Theme: $SDDM_THEME, background: $SDDM_THEME_DIR/wallpaper.jpg"
+    fi
+else
+    banner "Skipping the login screen setup (--no-login-screen)."
+fi
 
 ###############################################################
 # Global theme
@@ -538,6 +602,8 @@ Notes:
     Right-click the desktop > "Unlock Widgets" to rearrange anything.
   * Screen auto-lock is off, same as the reference desktop. Meta+L still
     locks manually. Re-enable it in System Settings > Screen Locking.
+  * SDDM uses the Breeze theme with the same wallpaper. Both files live under
+    /usr/share/sddm/themes/breeze/ and survive package updates.
   * Thermal Monitor is reading '$THERMAL_SENSOR'.
     List the available sensors in the widget's settings if it shows nothing.
   * The NAS widget needs ~/.config/btw-i-use-arch/nas.json plus a KWallet entry:
