@@ -30,35 +30,8 @@ if [ ! -L /snap ]; then
     sudo ln -s /var/lib/snapd/snap /snap
 fi
 
-echo "###############################################################"
-echo "# [BTW-I-USE-ARCH] Installing pamac."
-echo "###############################################################"
-yay -S --noconfirm libpamac-full pamac-cli pamac pamac-tray-icon-plasma
-
-echo "###############################################################"
-echo "# [BTW-I-USE-ARCH] Configuring Pamac features."
-echo "###############################################################"
-PAMAC_CONF="/etc/pamac.conf"
-
-if [ ! -f "$PAMAC_CONF" ]; then
-    echo "Config file not found. Creating a new one..."
-    sudo tee "$PAMAC_CONF" > /dev/null <<EOF
-### Pamac Configuration Created by arch-post-install.sh
-EnableAUR
-CheckAURUpdates
-EnableSnap
-EnableFlatpak
-EOF
-
-else
-    echo "Config file found. Enabling features..."
-    sudo sed -i 's/#EnableAUR/EnableAUR/' "$PAMAC_CONF"
-    sudo sed -i 's/#CheckAURUpdates/CheckAURUpdates/' "$PAMAC_CONF"
-    sudo sed -i 's/#EnableSnap/EnableSnap/' "$PAMAC_CONF"
-    sudo sed -i 's/#EnableFlatpak/EnableFlatpak/' "$PAMAC_CONF"
-fi
-
 chmod +x ./scripts/arch-post-install-*.sh
+bash ./scripts/arch-post-install-pamac.sh
 bash ./scripts/arch-post-install-apps.sh
 bash ./scripts/arch-post-install-vscodium.sh
 bash ./scripts/arch-post-install-node.sh
