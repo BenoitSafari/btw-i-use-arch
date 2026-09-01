@@ -86,3 +86,31 @@ bash arch-post-install.sh
 ```
 
 This installs yay, snapd, pamac, various dev tools and the Node.js stack (nodejs, npm, pnpm) with a `minimum-release-age` of 3 days as a supply-chain mitigation.
+
+## Desktop layout
+
+Reproduces the reference KDE Plasma 6 desktop — panels, global theme, fonts, wallpaper and every custom widget — on a fresh install. Run it from inside a Plasma session (not as root):
+
+```bash
+bash apply-benoit-layout.sh
+```
+
+The previous configuration is backed up to `~/.local/share/btw-i-use-arch/kde-backup-<timestamp>/` before anything is touched.
+
+| Argument | Description | Default |
+|---|---|---|
+| `--dry-run` | Print the rendered layout and every change without applying it | off |
+| `--no-packages` | Skip the pacman dependency install | install |
+| `--no-icons` | Skip the Tela icon theme download | install |
+| `--no-widgets` | Skip the custom + third-party plasmoids | install |
+| `--no-nas` | Leave the NAS disk usage widget out of the top panel | included |
+| `--panel-margin=<px>` | Side margin of the top panel | `40` |
+| `--thermal-sensor=<id>` | ksystemstats sensor for the Thermal Monitor widget | `cpu/all/averageTemperature` |
+
+Panel length, wallpaper fill mode and the secondary-screen containment adapt to the target display setup. The reference desktop (3440x1440, discrete GPU) is reproduced with:
+
+```bash
+bash apply-benoit-layout.sh --thermal-sensor=gpu/gpu1/temperature
+```
+
+The layout itself lives in [`conf/plasma/appletsrc.tpl`](conf/plasma/appletsrc.tpl) — edit that file to change what sits in the panels.
