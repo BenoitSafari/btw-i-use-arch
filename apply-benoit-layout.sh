@@ -8,6 +8,8 @@
 #   --no-widgets            Skip installing the custom + third-party plasmoids
 #   --no-nas                Drop the NAS disk usage widget from the top panel
 #   --no-login-screen       Skip the SDDM login screen setup (avoids sudo)
+#   --keep-bigscreen        Keep plasma-bigscreen (removed by default: the Arch
+#                           'plasma' group pulls it in and its session takes over)
 #   --panel-margin=<px>     Side margin of the top panel (default: 40)
 #   --thermal-sensor=<id>   ksystemstats sensor for the thermal widget
 #                           (default: cpu/all/averageTemperature ;
@@ -30,6 +32,7 @@ INSTALL_PACKAGES=1
 INSTALL_ICONS=1
 INSTALL_WIDGETS=1
 INSTALL_LOGIN=1
+REMOVE_BIGSCREEN=1
 WITH_NAS=1
 SDDM_THEME=breeze
 PANEL_MARGIN=40
@@ -68,6 +71,7 @@ for arg in "$@"; do
         --no-widgets)       INSTALL_WIDGETS=0 ;;
         --no-nas)           WITH_NAS=0 ;;
         --no-login-screen)  INSTALL_LOGIN=0 ;;
+        --keep-bigscreen)   REMOVE_BIGSCREEN=0 ;;
         --panel-margin=*)   PANEL_MARGIN="${arg#*=}" ;;
         --thermal-sensor=*) THERMAL_SENSOR="${arg#*=}" ;;
         --dry-run)          DRY_RUN=1 ;;
@@ -178,6 +182,26 @@ if (( INSTALL_PACKAGES )); then
     run sudo pacman -S --needed --noconfirm "${pkgs[@]}"
 else
     banner "Skipping dependency installation (--no-packages)."
+fi
+
+###############################################################
+# Plasma Bigscreen
+#
+# The Arch 'plasma' group pulls in plasma-bigscreen, which drops a
+# TV-oriented session into SDDM (plasma-bigscreen-wayland.desktop) plus a
+# "Swap session" launcher. Once that session is picked it sticks, and the
+# desktop layout below never shows up. Nothing depends on it.
+###############################################################
+
+if (( REMOVE_BIGSCREEN )); then
+    banner "Checking for the Plasma Bigscreen session."
+    if pacman -Qq plasma-bigscreen &>/dev/null; then
+        echo "  Installed — removing (it hijacks the session with a TV-style shell)."
+        run sudo pacman -Rns --noconfirm plasma-bigscreen
+        echo "  Removed. Log out and back in to land on the regular Plasma session."
+    else
+        echo "  Not installed."
+    fi
 fi
 
 ###############################################################
@@ -604,6 +628,8 @@ Notes:
     locks manually. Re-enable it in System Settings > Screen Locking.
   * SDDM uses the Breeze theme with the same wallpaper. Both files live under
     /usr/share/sddm/themes/breeze/ and survive package updates.
+  * If plasma-bigscreen was removed, log out and back in — SDDM still has the
+    old session selected until then.
   * Thermal Monitor is reading '$THERMAL_SENSOR'.
     List the available sensors in the widget's settings if it shows nothing.
   * The NAS widget needs ~/.config/btw-i-use-arch/nas.json plus a KWallet entry:

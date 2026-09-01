@@ -105,6 +105,7 @@ The previous configuration is backed up to `~/.local/share/btw-i-use-arch/kde-ba
 | `--no-widgets` | Skip the custom + third-party plasmoids | install |
 | `--no-nas` | Leave the NAS disk usage widget out of the top panel | included |
 | `--no-login-screen` | Skip the SDDM setup — the only step needing `sudo` beyond packages | configure |
+| `--keep-bigscreen` | Keep `plasma-bigscreen` instead of removing it | remove |
 | `--panel-margin=<px>` | Side margin of the top panel | `40` |
 | `--thermal-sensor=<id>` | ksystemstats sensor for the Thermal Monitor widget | `cpu/all/averageTemperature` |
 
@@ -115,3 +116,5 @@ bash apply-benoit-layout.sh --thermal-sensor=gpu/gpu1/temperature
 ```
 
 The layout itself lives in [`conf/plasma/appletsrc.tpl`](conf/plasma/appletsrc.tpl) — edit that file to change what sits in the panels.
+
+> **Plasma Bigscreen:** the Arch `plasma` group installed by `arch-install-chroot.sh` includes `plasma-bigscreen`, which adds a TV-oriented session to SDDM. Picking it once (directly or through its "Swap session" launcher) replaces the whole desktop with a big-tile interface and none of the layout below applies. The script removes the package unless `--keep-bigscreen` is passed; log out and back in afterwards.
