@@ -66,8 +66,8 @@ install_gpu_nvidia() {
     pacman -Syu --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils egl-wayland vulkan-icd-loader lib32-vulkan-icd-loader
     has_nvidia=1
 }
-install_gpu_amd()    { pacman -Syu --noconfirm xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader; }
-install_gpu_intel()  { pacman -Syu --noconfirm xf86-video-intel vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader; }
+install_gpu_amd()    { pacman -Syu --noconfirm xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader; }
+install_gpu_intel()  { pacman -Syu --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver vulkan-icd-loader lib32-vulkan-icd-loader; }
 
 if [[ -n "$gpu_profile" ]]; then
     echo "GPU profile(s) specified: $gpu_profile"
@@ -82,13 +82,15 @@ if [[ -n "$gpu_profile" ]]; then
     done
 else
     echo "No GPU profile specified, auto-detecting..."
-    if lspci | grep -qi nvidia; then
+    gpu_devices=$(lspci | grep -iE "VGA compatible controller|3D controller|Display controller")
+    echo "$gpu_devices"
+    if echo "$gpu_devices" | grep -qi nvidia; then
         install_gpu_nvidia
     fi
-    if lspci | grep -qi "amd\|ati"; then
+    if echo "$gpu_devices" | grep -qiE "\[AMD/ATI\]|Advanced Micro Devices"; then
         install_gpu_amd
     fi
-    if lspci | grep -qi intel; then
+    if echo "$gpu_devices" | grep -qi intel; then
         install_gpu_intel
     fi
 fi
