@@ -43,35 +43,35 @@ bash arch-install.sh --part-efi=/dev/nvme0n1p1 --part-root=/dev/nvme0n1p6 --part
 
 **GPU profiles disponibles** : `nvidia`, `amd`, `intel`
 
-## Partitioning with gdisk
+## Partitioning with cfdisk
 
-If no partition arguments are provided, the script will launch `gdisk` interactively. Here's a quick reference for creating partitions:
+If no partition arguments are provided, the script will launch `cfdisk` interactively. Navigate with the arrow keys, pick actions from the bottom menu. On an empty disk, choose the `gpt` label when prompted — `dos` will not boot in UEFI mode.
 
-### Key commands
+### Key actions
 
-| Command | Description |
+| Action | Description |
 |---|---|
-| `n` | Create a new partition |
-| `p` | Print the current partition table |
-| `d` | Delete a partition |
-| `w` | Write changes and exit |
-| `q` | Quit without saving |
+| `New` | Create a partition in the selected free space |
+| `Type` | Set the partition type |
+| `Delete` | Remove the selected partition |
+| `Write` | Commit changes to disk — asks for a literal `yes` |
+| `Quit` | Exit without saving |
 
-### Partition type codes
+### Partition types
 
-| Code | Type | Usage |
-|---|---|---|
-| `ef00` | EFI System | Boot partition (`/boot/efi`), FAT32, ~512 MB |
-| `8300` | Linux filesystem | Root partition (`/`), formatted as Btrfs |
-| `8200` | Linux swap | Swap partition, recommended = RAM size |
+| Type | Usage |
+|---|---|
+| `EFI System` | Boot partition (`/boot/efi`), FAT32, ~512 MB |
+| `Linux swap` | Swap partition, recommended = RAM size |
+| `Linux filesystem` | Root partition (`/`), formatted as Btrfs |
 
 ### Example layout
 
 ```
-Number  Size      Code  Name
-   1    512 MiB   ef00  EFI System
-   2    16 GiB    8200  Linux swap
-   3    remainder 8300  Linux root
+Device       Size        Type
+/dev/sda1    512M        EFI System
+/dev/sda2    16G         Linux swap
+/dev/sda3    remainder   Linux filesystem
 ```
 
 ## Post-installation
